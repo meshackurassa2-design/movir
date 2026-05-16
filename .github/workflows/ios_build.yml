@@ -29,20 +29,35 @@ jobs:
       - name: Install Capacitor iOS
         run: |
           npm install @capacitor/ios
-          npx cap add ios || true
+          # Initialize iOS platform if it doesn't exist
+          if [ ! -d "ios" ]; then
+            npx cap add ios
+          fi
           npx cap sync ios
+
+      - name: Install CocoaPods
+        run: |
+          cd ios/App
+          pod install
 
       - name: Build iOS App
         run: |
           cd ios/App
-          xcodebuild -workspace App.xcworkspace -scheme App -sdk iphoneos -configuration Release CODE_SIGNING_ALLOWED=NO | xcpretty
+          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos CODE_SIGNING_ALLOWED=NO | xcpretty
 
       - name: Create Unsigned IPA
         run: |
           mkdir -p build/Payload
-          cp -r ios/App/build/Release-iphoneos/App.app build/Payload/
+          # Find the .app file (the path can vary slightly)
+          APP_PATH=$(find ios/App/build -name "App.app" -type d | head -n 1)
+          if [ -z "$APP_PATH" ]; then
+            # Try alternative location
+            APP_PATH=$(find ~/Library/Developer/Xcode/DerivedData -name "App.app" -type d | head -n 1)
+          fi
+          cp -r "$APP_PATH" build/Payload/
           cd build
           zip -r MovieBox.ipa Payload
+
           
       - name: Upload IPA Artifact
         uses: actions/upload-artifact@v4
