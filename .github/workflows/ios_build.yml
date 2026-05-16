@@ -28,22 +28,26 @@ jobs:
 
       - name: Install Capacitor iOS
         run: |
-          npm install @capacitor/ios
-          # Initialize iOS platform if it doesn't exist
-          if [ ! -d "ios" ]; then
-            npx cap add ios
-          fi
+          npm install @capacitor/ios @capacitor/cli
+          # Initialize iOS platform
+          npx cap add ios || echo "iOS already added"
           npx cap sync ios
+          # Verify the workspace exists
+          ls -R ios/App
 
       - name: Build iOS App
         run: |
+          set -o pipefail
           cd ios/App
+          if [ ! -d "App.xcworkspace" ]; then
+            echo "Error: App.xcworkspace not found!"
+            exit 1
+          fi
           xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos -derivedDataPath ../../build_output CODE_SIGNING_ALLOWED=NO | xcpretty
 
       - name: Create Unsigned IPA
         run: |
           mkdir -p build/Payload
-          # Search for the .app file in the specified derivedDataPath
           APP_PATH=$(find build_output -name "App.app" -type d | head -n 1)
           if [ -z "$APP_PATH" ]; then
             echo "Error: Could not find App.app"
@@ -52,6 +56,7 @@ jobs:
           cp -r "$APP_PATH" build/Payload/
           cd build
           zip -r MovieBox.ipa Payload
+
 
           
       - name: Upload IPA Artifact
