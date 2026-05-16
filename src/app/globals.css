@@ -1,0 +1,110 @@
+@import './design-tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@keyframes premiumFadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes premiumExpandLine {
+  from { transform: scaleX(0); opacity: 0; }
+  to { transform: scaleX(1); opacity: 1; }
+}
+
+@keyframes premiumFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes premiumPulse {
+  0% { opacity: 0.1; }
+  50% { opacity: 0.2; }
+  100% { opacity: 0.1; }
+}
+
+.animate-premium-fade-in-up {
+  animation: premiumFadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.animate-premium-expand-line {
+  animation: premiumExpandLine 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s forwards;
+  transform: scaleX(0);
+}
+
+.animate-premium-fade-in {
+  animation: premiumFadeIn 1s ease 1s forwards;
+  opacity: 0;
+}
+
+.animate-premium-pulse {
+  animation: premiumPulse 2.5s ease-in-out infinite;
+}
+
+@layer base {
+  :root {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply m-0 min-h-screen overflow-x-hidden;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  * {
+    @apply border-white/10;
+  }
+}
+
+@layer components {
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--border-subtle);
+  }
+
+  .glass-hover:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--border-strong);
+  }
+
+  .touch-target {
+    min-height: 48px;
+    min-width: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-premium {
+    @apply touch-target px-6 py-3 rounded-md transition-all duration-300 active:scale-95;
+    background: var(--accent-white);
+    color: var(--bg-primary);
+    font-weight: 600;
+  }
+
+  .btn-premium:hover {
+    @apply opacity-90;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  }
+
+  .card-premium {
+    @apply p-6 rounded-lg glass transition-all duration-300;
+  }
+
+  .card-premium:hover {
+    @apply border-white/20;
+  }
+}
