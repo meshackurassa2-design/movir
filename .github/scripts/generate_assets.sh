@@ -5,11 +5,12 @@ mkdir -p assets
 
 # Decode icon
 echo "Decoding icon..."
-base64 -d icon_base64.txt > assets/icon.png
+base64 -D -i icon_base64.txt -o assets/icon.png
 
 # Decode splash
 echo "Decoding splash..."
-base64 -d splash_base64.txt > assets/splash.png
+base64 -D -i splash_base64.txt -o assets/splash.png
+
 
 # Install asset generator
 npm install @capacitor/assets
