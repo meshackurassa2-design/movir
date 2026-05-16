@@ -38,17 +38,16 @@ jobs:
       - name: Build iOS App
         run: |
           cd ios/App
-          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos CODE_SIGNING_ALLOWED=NO | xcpretty
-
+          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos -derivedDataPath ../../build_output CODE_SIGNING_ALLOWED=NO | xcpretty
 
       - name: Create Unsigned IPA
         run: |
           mkdir -p build/Payload
-          # Find the .app file (the path can vary slightly)
-          APP_PATH=$(find ios/App/build -name "App.app" -type d | head -n 1)
+          # Search for the .app file in the specified derivedDataPath
+          APP_PATH=$(find build_output -name "App.app" -type d | head -n 1)
           if [ -z "$APP_PATH" ]; then
-            # Try alternative location
-            APP_PATH=$(find ~/Library/Developer/Xcode/DerivedData -name "App.app" -type d | head -n 1)
+            echo "Error: Could not find App.app"
+            exit 1
           fi
           cp -r "$APP_PATH" build/Payload/
           cd build
