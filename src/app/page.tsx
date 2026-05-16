@@ -1,69 +1,79 @@
 'use client';
 
 import React from 'react';
-import { useAuth } from './providers/auth-provider';
-import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+
+const CATEGORIES = [
+  { id: 'tech', label: 'TECH' },
+  { id: 'travel', label: 'TRAVEL' },
+  { id: 'finance', label: 'FINANCE' },
+  { id: 'wellness', label: 'WELLNESS' },
+  { id: 'pets', label: 'PETS' },
+  { id: 'ai', label: 'AI' }
+];
 
 export default function Home() {
-  const { role, setRole, isAuthenticated } = useAuth();
-  const router = useRouter();
-
-  // Redirect if already authenticated
-  React.useEffect(() => {
-    if (isAuthenticated) {
-      router.push('/dashboard');
-    }
-  }, [isAuthenticated, router]);
-
-  const roles: Array<'Admin' | 'Supervisor' | 'Staff'> = ['Admin', 'Supervisor', 'Staff'];
-
   return (
-    <main className="min-h-screen bg-black flex flex-col items-center justify-center p-6 md:p-12">
-      <div className="w-full max-w-sm space-y-12">
-        {/* Branding Area */}
-        <div className="text-center space-y-4 animate-in fade-in slide-in-from-top-6 duration-1000">
-          <div className="inline-block px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-[10px] text-white/40 tracking-[0.2em] uppercase font-medium mb-4">
-            Secured Access
-          </div>
-          <div className="text-center space-y-2">
-            <h1 className="text-4xl font-bold tracking-tighter text-white">SITE TO SITE</h1>
-            <p className="text-zinc-500 text-sm uppercase tracking-[0.2em]">Employee Client Tracking System</p>
-          </div>
+    <main className="min-h-screen bg-gradient-to-br from-[#0a4a5e] via-[#052b36] to-[#02151a] text-white p-6 md:p-12 flex flex-col justify-between">
+      {/* Top Section */}
+      <section className="mt-12 space-y-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="space-y-1"
+        >
+          <h1 className="text-5xl font-black tracking-tighter leading-none">
+            EXPLORE<br />
+            WHAT'S<br />
+            <span className="text-yellow-400">HAPPENING</span><br />
+            IN THE WORLD
+          </h1>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
+          className="space-y-1 text-lg font-medium opacity-90"
+        >
+          <p>New ideas. Top trends.</p>
+          <p>Fresh perspectives.</p>
+        </motion.div>
+
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="bg-yellow-400 text-black font-black py-4 px-8 rounded-full text-lg shadow-lg shadow-yellow-400/20"
+        >
+          EXPLORE MORE
+        </motion.button>
+      </section>
+
+      {/* Grid Section */}
+      <section className="mb-12">
+        <div className="grid grid-cols-3 gap-3">
+          {CATEGORIES.map((cat, idx) => (
+            <motion.button
+              key={cat.id}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.6 + idx * 0.1 }}
+              className="aspect-square bg-[#0a2e38] border border-blue-400/30 rounded-xl flex items-center justify-center text-[10px] md:text-xs font-bold tracking-widest hover:bg-[#0f414f] hover:border-blue-400 transition-all active:scale-90 shadow-xl"
+            >
+              {cat.label}
+            </motion.button>
+          ))}
         </div>
+      </section>
 
-        <div className="card-premium space-y-6">
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold text-white">Select Your Interface</h2>
-            <p className="text-sm text-white/40">Choose your role to enter the workspace.</p>
-          </div>
-
-          <div className="grid gap-3">
-            {roles.map((r) => (
-              <button
-                key={r}
-                onClick={() => setRole(r)}
-                className="w-full flex items-center justify-between px-5 py-4 rounded-md border border-white/5 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-300 group"
-              >
-                <div className="text-left">
-                  <p className="text-sm font-semibold text-white">{r}</p>
-                  <p className="text-[10px] text-white/30 uppercase tracking-wider mt-0.5">
-                    {r === 'Admin' ? 'Full Access' : r === 'Supervisor' ? 'Team Management' : 'Field Operations'}
-                  </p>
-                </div>
-                <div className="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/40 transition-colors">
-                  <svg className="w-3 h-3 text-white/40 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </button>
-            ))}
-          </div>
+      {/* Decorative Circle */}
+      <div className="fixed -right-20 top-1/2 -translate-y-1/2 w-64 h-64 border border-blue-400/20 rounded-full flex items-center justify-center opacity-30 pointer-events-none">
+        <div className="w-48 h-48 border border-blue-400/20 rounded-full flex items-center justify-center">
+          <div className="w-32 h-32 border border-blue-400/20 rounded-full" />
         </div>
-
-        <p className="text-center text-[10px] text-white/20 uppercase tracking-[0.3em]">
-          Powered by InsForge & Next.js
-        </p>
       </div>
     </main>
   );
 }
+
