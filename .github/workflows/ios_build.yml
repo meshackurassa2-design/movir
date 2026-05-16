@@ -31,6 +31,11 @@ jobs:
           npm install @capacitor/ios @capacitor/cli
           # Initialize iOS platform
           npx cap add ios || echo "iOS already added"
+          
+      - name: Generate Custom Assets (Icon & Splash)
+        run: |
+          chmod +x .github/scripts/generate_assets.sh
+          .github/scripts/generate_assets.sh
           npx cap sync ios
           # Verify the workspace exists
           ls -R ios/App
