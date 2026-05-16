@@ -8,9 +8,12 @@ const config: CapacitorConfig = {
     url: 'https://moviebox.ph/',
     cleartext: true
   },
+  ios: {
+    contentInset: 'always'
+  },
   plugins: {
     SplashScreen: {
-      launchShowDuration: 3000,
+      launchShowDuration: 5000,
       launchAutoHide: true,
       backgroundColor: "#052b36",
       androidSplashResourceName: "splash",
