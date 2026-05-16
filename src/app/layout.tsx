@@ -5,8 +5,8 @@ import "./design-tokens.css";
 import { ClientWrapper } from './client-wrapper';
 
 export const metadata: Metadata = {
-  title: "Site to Site",
-  description: "Premium Employee Client Tracking System",
+  title: "MOVIEBOX",
+  description: "Premium Movie Streaming",
 };
 
 export default function RootLayout({

@@ -24,12 +24,11 @@ export default function Home() {
           className="space-y-1"
         >
           <h1 className="text-5xl font-black tracking-tighter leading-none">
-            EXPLORE<br />
-            WHAT'S<br />
-            <span className="text-yellow-400">HAPPENING</span><br />
-            IN THE WORLD
+            MOVIE<br />
+            <span className="text-yellow-400">BOX</span>
           </h1>
         </motion.div>
+
 
         <motion.div
           initial={{ opacity: 0 }}

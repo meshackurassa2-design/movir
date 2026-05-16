@@ -2,8 +2,12 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.dapazcm.moviebox',
-  appName: 'Movie Box',
+  appName: 'MOVIEBOX',
   webDir: 'out',
+  server: {
+    url: 'https://moviebox.ph/',
+    cleartext: true
+  },
   plugins: {
     SplashScreen: {
       launchShowDuration: 3000,
